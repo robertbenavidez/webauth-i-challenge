@@ -55,6 +55,15 @@ router.get('/users', restricted,  (req, res) => {
         });
 });
 
+router.get('/logout', (req, res) {
+    if (req.session) {
+        req.session.destroy(error => {
+            res.status(200).json({ message: "later bro" });
+          });
+    } else {
+        res.status(200).json({ message: "Dude, you are logged out" });
+    }
+})
 
 
 
