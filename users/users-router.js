@@ -4,7 +4,7 @@ const bcrypt = require('bcryptjs');
 const Users = require('./users-model.js')
 
 const router = express.Router();
-
+const restricted = require('../auth/restricted-middleware');
 
 //test route
 router.get('/', (req, res) => {
@@ -13,7 +13,7 @@ router.get('/', (req, res) => {
 
 
 
-//Registers user
+//Registers user and hash password
 
 router.post('/register', (req, res) => {
     let user = req.body;
@@ -45,6 +45,14 @@ router.post('/login', (req, res) => {
         .catch(error => {
             res.status(500).json(error);
         });
+});
+
+router.get('/users', restricted, (req, res) => {
+    Users.find()
+        .then(users => {
+            res.json(users)
+        })
+        .catch(error => res.send(error))
 });
 
 
